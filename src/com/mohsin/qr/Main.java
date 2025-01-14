@@ -1,26 +1,37 @@
 package com.mohsin.qr;
 
-import net.glxn.qrgen.QRCode;
-import net.glxn.qrgen.image.ImageType;
+import com.mohsin.qr.generator.DefaultQRCodeGenerator;
+import com.mohsin.qr.generator.QRCodeGenerator;
+import com.mohsin.qr.utils.FileHandler;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 
 public class Main {
     public static void main(String[] args) {
-        try {
-            File file = new File("abc.jpg"); // Corrected file extension
-            String content = "this is my content"; // Fixed typo in variable name
+        // Define the output directory and file name
+        String outputDirectory = "output"; // Directory where the file will be created
+        String fileName = "qr_code.png"; // Name of the QR code file
 
-            ByteArrayOutputStream out = QRCode.from(content).to(ImageType.JPG).stream();
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-            fileOutputStream.write(out.toByteArray());
-            fileOutputStream.close();
+        // Ensure the output directory exists
+        if (FileHandler.ensureDirectoryExists(outputDirectory)) {
+            // Generate the full file path
+            String filePath = FileHandler.getFilePath(outputDirectory, fileName);
 
-            System.out.println("QR code generated successfully: " + file.getAbsolutePath());
-        } catch (Exception e) {
-            e.printStackTrace(); // Print full stack trace for better debugging
+            // Define the QR code content
+            String content = "Welcome to the industrial-level QR code generator system!";
+
+            // Use the QR code generator
+            QRCodeGenerator generator = new DefaultQRCodeGenerator();
+            File qrCodeFile = generator.generateQRCode(content, filePath);
+
+            // Print the result
+            if (qrCodeFile != null) {
+                System.out.println("QR code generated successfully: " + qrCodeFile.getAbsolutePath());
+            } else {
+                System.out.println("Failed to generate QR code.");
+            }
+        } else {
+            System.out.println("Failed to create output directory.");
         }
     }
 }
