@@ -18,7 +18,7 @@ public class Main {
             String filePath = FileHandler.getFilePath(outputDirectory, fileName);
 
             // Define the QR code content
-            String content = "Welcome to the industrial-level QR code generator system!";
+            String content = "Welcome Md Mohsin haider ";
 
             // Use the QR code generator
             QRCodeGenerator generator = new DefaultQRCodeGenerator();
